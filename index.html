@@ -284,16 +284,16 @@ select.ff{appearance:none;cursor:pointer;background-image:url("data:image/svg+xm
 .podcast-list{display:flex;flex-direction:column;gap:18px}
 .podcast-card{display:flex;gap:18px;background:#fff;border-radius:20px;overflow:hidden;text-decoration:none;box-shadow:0 8px 28px rgba(12,26,46,.07);transition:transform .3s,box-shadow .3s;border:1px solid rgba(12,26,46,.06)}
 .podcast-card:hover{transform:translateY(-4px);box-shadow:0 16px 44px rgba(12,26,46,.13)}
-.podcast-cover{position:relative;flex-shrink:0;width:140px;height:100px;overflow:hidden;background:var(--ocean)}
+.podcast-cover{position:relative;flex-shrink:0;width:180px;height:120px;overflow:hidden;background:var(--ocean)}
 .podcast-cover img{width:100%;height:100%;object-fit:cover;display:block}
 .podcast-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s}
 .podcast-card:hover .podcast-play{opacity:1}
 .podcast-play svg{width:44px;height:44px}
-.podcast-info{flex:1;padding:18px 20px 18px 0;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.podcast-info{flex:1;padding:16px 20px 16px 0;display:flex;flex-direction:column;justify-content:center;gap:8px}
 .podcast-platform{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--ts);letter-spacing:.04em;text-transform:uppercase}
 .podcast-platform svg{width:18px;height:18px}
 .podcast-title{font-size:15px;font-weight:700;color:var(--td);line-height:1.3}
-.podcast-desc{font-size:13px;color:var(--ts);line-height:1.5}
+.podcast-desc{display:none}
 .podcast-arrow{font-size:13px;font-weight:700;color:#4a7f88;margin-top:4px}
 /* ════════ STEPS TIMELINE ════════ */
 .steps-s{background:var(--cream);padding:100px 36px}
@@ -379,7 +379,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   .why,.env,.form-s,.steps-s,.final{padding-top:64px;padding-bottom:64px}
   .media-s{padding-top:64px;padding-bottom:64px}
   .media-inner{grid-template-columns:1fr;gap:44px}
-  .podcast-cover{width:110px;height:80px}
+  .podcast-cover{width:130px;height:90px}
   .tours-card{padding:32px 16px}
   .tours-top{flex-direction:column}
   .tcard{flex:0 0 calc((100% - 14px)/2)}
@@ -768,7 +768,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
         <p>На канале: разбор внутренних блоков и сценариев, честные разговоры об отношениях, самооценке и кризисах, истории клиентов и путь к настоящему «себе».</p>
         <p class="media-bio-closing">Я не обещаю волшебную таблетку — но даю инструменты, которые действительно работают. Подписывайтесь, если готовы быть честными с собой и идти вглубь.</p>
       </div>
-      <a href="https://www.youtube.com/@" target="_blank" class="yt-btn">
+      <a href="https://www.youtube.com/@zviaginatatyana" target="_blank" class="yt-btn">
         <svg viewBox="0 0 24 24" fill="none"><path d="M22.5 6.2a2.85 2.85 0 0 0-2-2C18.9 4 12 4 12 4s-6.9 0-8.5.2a2.85 2.85 0 0 0-2 2C1.3 7.8 1.3 12 1.3 12s0 4.2.2 5.8a2.85 2.85 0 0 0 2 2C5.1 20 12 20 12 20s6.9 0 8.5-.2a2.85 2.85 0 0 0 2-2c.2-1.6.2-5.8.2-5.8s0-4.2-.2-5.8Z" fill="#FF0000"/><path d="M9.8 15.2V8.8L15.8 12l-6 3.2Z" fill="#fff"/></svg>
         Перейти на YouTube-канал →
       </a>
@@ -789,7 +789,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
               <svg viewBox="0 0 24 24" fill="none"><path d="M22.5 6.2a2.85 2.85 0 0 0-2-2C18.9 4 12 4 12 4s-6.9 0-8.5.2a2.85 2.85 0 0 0-2 2C1.3 7.8 1.3 12 1.3 12s0 4.2.2 5.8a2.85 2.85 0 0 0 2 2C5.1 20 12 20 12 20s6.9 0 8.5-.2a2.85 2.85 0 0 0 2-2c.2-1.6.2-5.8.2-5.8s0-4.2-.2-5.8Z" fill="#FF0000"/><path d="M9.8 15.2V8.8L15.8 12l-6 3.2Z" fill="#fff"/></svg>
               YouTube
             </div>
-            <div class="podcast-title">Название подкаста 1</div>
+            <div class="podcast-title">С тобой УЖЕ ВСЁ В ПОРЯДКЕ: почему мы устали от целей, обучения и бесконечного развития?</div>
             <div class="podcast-desc">Описание выпуска — о чём говорили в этом выпуске</div>
             <div class="podcast-arrow">Слушать →</div>
           </div>
@@ -805,7 +805,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
               <svg viewBox="0 0 24 24" fill="none"><path d="M22.5 6.2a2.85 2.85 0 0 0-2-2C18.9 4 12 4 12 4s-6.9 0-8.5.2a2.85 2.85 0 0 0-2 2C1.3 7.8 1.3 12 1.3 12s0 4.2.2 5.8a2.85 2.85 0 0 0 2 2C5.1 20 12 20 12 20s6.9 0 8.5-.2a2.85 2.85 0 0 0 2-2c.2-1.6.2-5.8.2-5.8s0-4.2-.2-5.8Z" fill="#FF0000"/><path d="M9.8 15.2V8.8L15.8 12l-6 3.2Z" fill="#fff"/></svg>
               YouTube
             </div>
-            <div class="podcast-title">Название подкаста 2</div>
+            <div class="podcast-title">ПРОЯВЛЕННОСТЬ: Как заявить о себе и не бояться чужого мнения?</div>
             <div class="podcast-desc">Описание выпуска — о чём говорили в этом выпуске</div>
             <div class="podcast-arrow">Слушать →</div>
           </div>
@@ -821,7 +821,7 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
               <svg viewBox="0 0 24 24" fill="none"><path d="M22.5 6.2a2.85 2.85 0 0 0-2-2C18.9 4 12 4 12 4s-6.9 0-8.5.2a2.85 2.85 0 0 0-2 2C1.3 7.8 1.3 12 1.3 12s0 4.2.2 5.8a2.85 2.85 0 0 0 2 2C5.1 20 12 20 12 20s6.9 0 8.5-.2a2.85 2.85 0 0 0 2-2c.2-1.6.2-5.8.2-5.8s0-4.2-.2-5.8Z" fill="#FF0000"/><path d="M9.8 15.2V8.8L15.8 12l-6 3.2Z" fill="#fff"/></svg>
               YouTube
             </div>
-            <div class="podcast-title">Название подкаста 3</div>
+            <div class="podcast-title">Что такое память тела? И как она влияет на жизнь?</div>
             <div class="podcast-desc">Описание выпуска — о чём говорили в этом выпуске</div>
             <div class="podcast-arrow">Слушать →</div>
           </div>
