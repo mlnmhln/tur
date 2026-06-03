@@ -106,7 +106,42 @@ header.hdr.scrolled .hdr-bar{background:rgba(61,31,29,.9)}
 .h2-big{font-family:var(--fb);font-size:clamp(32px,4vw,56px);font-weight:800;line-height:1.1;color:var(--td);letter-spacing:-.01em}
 .h2-big .blue{color:inherit}
 
-/* ════════ TOURS ════════ */
+/* ════════ TOURS VIBE BLOCK ════════ */
+.vibe{background:#DBD0BC;padding:100px 36px}
+.vibe-inner{max-width:1320px;margin:0 auto}
+.vibe-head{text-align:center;margin-bottom:52px}
+.vibe-head h2{font-family:var(--fb);font-size:clamp(30px,4vw,52px);font-weight:800;color:var(--td);line-height:1.1;letter-spacing:-.015em;margin-bottom:16px}
+.vibe-head p{font-size:17px;line-height:1.6;color:var(--ts);max-width:520px;margin:0 auto}
+/* cards row */
+.vibe-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:52px}
+.vcard{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:3/4;background:#3D1F1D;box-shadow:0 12px 36px rgba(61,31,29,.18);cursor:pointer;transition:transform .3s,box-shadow .3s}
+.vcard:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(61,31,29,.25)}
+.vcard-bg{position:absolute;inset:0;background:center/cover no-repeat;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.vcard:hover .vcard-bg{transform:scale(1.06)}
+.vcard-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(61,31,29,.85) 0%,rgba(61,31,29,.3) 45%,rgba(61,31,29,.05) 75%)}
+.vcard-label{position:absolute;top:18px;left:18px;z-index:2}
+.vcard-country{font-family:var(--fb);font-size:15px;font-weight:800;color:#fff;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px}
+.vcard-city{font-size:12px;color:rgba(255,255,255,.75);font-weight:500}
+/* play button */
+.vcard-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;width:56px;height:56px;border-radius:50%;background:rgba(219,208,188,.95);display:flex;align-items:center;justify-content:center;transition:transform .25s,box-shadow .25s;box-shadow:0 8px 28px rgba(61,31,29,.3)}
+.vcard:hover .vcard-play{transform:translate(-50%,-50%) scale(1.12);box-shadow:0 12px 36px rgba(61,31,29,.4)}
+.vcard-play svg{width:22px;height:22px;margin-left:3px}
+/* vk iframe overlay */
+.vcard-iframe{position:absolute;inset:0;z-index:10;display:none}
+.vcard-iframe iframe{width:100%;height:100%;border:none}
+.vcard-iframe.active{display:block}
+.vcard-close{position:absolute;top:10px;right:10px;z-index:11;width:30px;height:30px;border-radius:50%;background:rgba(61,31,29,.8);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#DBD0BC;font-size:16px;line-height:1}
+/* features row */
+.vibe-features{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.vfeat{display:flex;align-items:flex-start;gap:16px}
+.vfeat-ico{width:52px;height:52px;flex-shrink:0;border-radius:16px;background:#B6D2E8;display:flex;align-items:center;justify-content:center}
+.vfeat-ico svg{width:26px;height:26px}
+.vfeat-t{font-size:15px;font-weight:700;color:var(--td);margin-bottom:5px}
+.vfeat-d{font-size:13.5px;line-height:1.55;color:var(--ts)}
+@media(max-width:1100px){.vibe-row{grid-template-columns:repeat(3,1fr)}.vibe-row .vcard:nth-child(4),.vibe-row .vcard:nth-child(5){display:none}}
+@media(max-width:768px){.vibe{padding:64px 18px}.vibe-row{grid-template-columns:repeat(2,1fr);gap:12px}.vibe-row .vcard:nth-child(4),.vibe-row .vcard:nth-child(5){display:none}.vibe-features{grid-template-columns:1fr 1fr;gap:20px}}
+@media(max-width:480px){.vibe-features{grid-template-columns:1fr}}
+
 .tours{background:#B6D2E8;padding:90px 36px}
 .tours-card{max-width:1320px;margin:0 auto;background:#DBD0BC;border-radius:20px;padding:48px 44px;box-shadow:0 30px 80px rgba(61,31,29,.08)}
 .tours-top{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:38px}
