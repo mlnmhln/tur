@@ -268,6 +268,32 @@ select.ff{appearance:none;cursor:pointer;background-image:url("data:image/svg+xm
 .fr-quote{font-family:var(--fd);font-size:24px;font-weight:500;font-style:italic;line-height:1.4;color:#fff}
 .fr-text{font-size:15px;line-height:1.8;color:var(--tls);margin-bottom:14px;max-width:520px}
 
+/* ════════ MEDIA / YOUTUBE ════════ */
+.media-s{background:var(--paper);padding:100px 36px}
+.media-inner{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.media-h{font-family:var(--fb);font-size:clamp(28px,3vw,44px);font-weight:800;color:var(--td);line-height:1.05;letter-spacing:-.015em;margin-bottom:8px}
+.media-role{font-size:16px;font-weight:600;color:var(--blue);margin-bottom:28px}
+.media-bio{display:flex;flex-direction:column;gap:14px;margin-bottom:36px}
+.media-bio p{font-size:15px;line-height:1.75;color:var(--ts)}
+.media-bio-closing{font-weight:600;color:var(--td)!important}
+.yt-btn{display:inline-flex;align-items:center;gap:14px;background:var(--td);color:#fff;font-family:var(--fb);font-size:15px;font-weight:700;padding:18px 34px;border-radius:14px;text-decoration:none;transition:transform .2s,box-shadow .2s}
+.yt-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(12,26,46,.28)}
+.yt-btn svg{width:28px;height:28px;flex-shrink:0}
+/* podcasts */
+.podcast-list{display:flex;flex-direction:column;gap:18px}
+.podcast-card{display:flex;gap:18px;background:#fff;border-radius:20px;overflow:hidden;text-decoration:none;box-shadow:0 8px 28px rgba(12,26,46,.07);transition:transform .3s,box-shadow .3s;border:1px solid rgba(12,26,46,.06)}
+.podcast-card:hover{transform:translateY(-4px);box-shadow:0 16px 44px rgba(12,26,46,.13)}
+.podcast-cover{position:relative;flex-shrink:0;width:140px;height:100px;overflow:hidden;background:var(--ocean)}
+.podcast-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.podcast-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s}
+.podcast-card:hover .podcast-play{opacity:1}
+.podcast-play svg{width:44px;height:44px}
+.podcast-info{flex:1;padding:18px 20px 18px 0;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.podcast-platform{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--ts);letter-spacing:.04em;text-transform:uppercase}
+.podcast-platform svg{width:18px;height:18px}
+.podcast-title{font-size:15px;font-weight:700;color:var(--td);line-height:1.3}
+.podcast-desc{font-size:13px;color:var(--ts);line-height:1.5}
+.podcast-arrow{font-size:13px;font-weight:700;color:var(--blue);margin-top:4px}
 /* ════════ STEPS TIMELINE ════════ */
 .steps-s{background:var(--cream);padding:100px 36px}
 .steps-inner{max-width:1080px;margin:0 auto;text-align:center}
@@ -350,6 +376,9 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   .tours,.why,.env,.form-s,.steps-s,.final,footer{padding-left:18px;padding-right:18px}
   .tours{padding-top:64px;padding-bottom:64px}
   .why,.env,.form-s,.steps-s,.final{padding-top:64px;padding-bottom:64px}
+  .media-s{padding-top:64px;padding-bottom:64px}
+  .media-inner{grid-template-columns:1fr;gap:44px}
+  .podcast-cover{width:110px;height:80px}
   .tours-card{padding:32px 16px}
   .tours-top{flex-direction:column}
   .tcard{flex:0 0 calc((100% - 14px)/2)}
@@ -721,7 +750,84 @@ footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;back
   </div>
 </section>
 
-<!-- ░░░░░░ STEPS ░░░░░░ -->
+<!-- ░░░░░░ YOUTUBE & PODCASTS ░░░░░░ -->
+<section class="media-s sec" id="media">
+  <div class="media-inner">
+
+    <!-- LEFT: bio + youtube -->
+    <div class="media-left rv">
+      <div class="eyebrow-blue" style="margin-bottom:22px">Канал Татьяны</div>
+      <h2 class="media-h">Я — Татьяна Звягина</h2>
+      <p class="media-role">Психолог с 18-летним опытом, бизнес-тренер</p>
+      <div class="media-bio">
+        <p>Клиенты называют меня психохирургом — потому что я работаю глубоко, точно и навсегда.</p>
+        <p>Моя история — не из книжек. Онкология. Пять операций. Рецидив. Я выбрала путь не сдаваться, вытащила себя через работу с психикой — и вернулась к жизни. Сегодня я веду за собой других.</p>
+        <p>На канале: разбор внутренних блоков и сценариев, честные разговоры об отношениях, самооценке и кризисах, истории клиентов и путь к настоящему «себе».</p>
+        <p class="media-bio-closing">Я не обещаю волшебную таблетку — но даю инструменты, которые действительно работают. Подписывайтесь, если готовы быть честными с собой и идти вглубь.</p>
+      </div>
+      <a href="https://www.youtube.com/@" target="_blank" class="yt-btn">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M22.5 6.2a2.85 2.85 0 0 0-2-2C18.9 4 12 4 12 4s-6.9 0-8.5.2a2.85 2.85 0 0 0-2 2C1.3 7.8 1.3 12 1.3 12s0 4.2.2 5.8a2.85 2.85 0 0 0 2 2C5.1 20 12 20 12 20s6.9 0 8.5-.2a2.85 2.85 0 0 0 2-2c.2-1.6.2-5.8.2-5.8s0-4.2-.2-5.8Z" fill="#FF0000"/><path d="M9.8 15.2V8.8L15.8 12l-6 3.2Z" fill="#fff"/></svg>
+        Перейти на YouTube-канал →
+      </a>
+    </div>
+
+    <!-- RIGHT: podcasts -->
+    <div class="media-right">
+      <div class="eyebrow-blue rv" style="margin-bottom:22px">Подкасты с Татьяной</div>
+      <div class="podcast-list">
+
+        <a href="https://youtu.be/eqh4PpxA6lc?si=v_un23e2u49mv9Os" target="_blank" class="podcast-card rv">
+          <div class="podcast-cover">
+            <img src="https://img.youtube.com/vi/eqh4PpxA6lc/mqdefault.jpg" alt="Подкаст 1">
+            <div class="podcast-play"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.5)"/><path d="M10 8L17 12L10 16Z" fill="#fff"/></svg></div>
+          </div>
+          <div class="podcast-info">
+            <div class="podcast-platform">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M22.5 6.2a2.85 2.85 0 0 0-2-2C18.9 4 12 4 12 4s-6.9 0-8.5.2a2.85 2.85 0 0 0-2 2C1.3 7.8 1.3 12 1.3 12s0 4.2.2 5.8a2.85 2.85 0 0 0 2 2C5.1 20 12 20 12 20s6.9 0 8.5-.2a2.85 2.85 0 0 0 2-2c.2-1.6.2-5.8.2-5.8s0-4.2-.2-5.8Z" fill="#FF0000"/><path d="M9.8 15.2V8.8L15.8 12l-6 3.2Z" fill="#fff"/></svg>
+              YouTube
+            </div>
+            <div class="podcast-title">Название подкаста 1</div>
+            <div class="podcast-desc">Описание выпуска — о чём говорили в этом выпуске</div>
+            <div class="podcast-arrow">Слушать →</div>
+          </div>
+        </a>
+
+        <a href="https://youtu.be/ydTsSisbuPw?si=0ZQfe5VcaYUx9hfE" target="_blank" class="podcast-card rv d1">
+          <div class="podcast-cover">
+            <img src="https://img.youtube.com/vi/ydTsSisbuPw/mqdefault.jpg" alt="Подкаст 2">
+            <div class="podcast-play"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.5)"/><path d="M10 8L17 12L10 16Z" fill="#fff"/></svg></div>
+          </div>
+          <div class="podcast-info">
+            <div class="podcast-platform">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M22.5 6.2a2.85 2.85 0 0 0-2-2C18.9 4 12 4 12 4s-6.9 0-8.5.2a2.85 2.85 0 0 0-2 2C1.3 7.8 1.3 12 1.3 12s0 4.2.2 5.8a2.85 2.85 0 0 0 2 2C5.1 20 12 20 12 20s6.9 0 8.5-.2a2.85 2.85 0 0 0 2-2c.2-1.6.2-5.8.2-5.8s0-4.2-.2-5.8Z" fill="#FF0000"/><path d="M9.8 15.2V8.8L15.8 12l-6 3.2Z" fill="#fff"/></svg>
+              YouTube
+            </div>
+            <div class="podcast-title">Название подкаста 2</div>
+            <div class="podcast-desc">Описание выпуска — о чём говорили в этом выпуске</div>
+            <div class="podcast-arrow">Слушать →</div>
+          </div>
+        </a>
+
+        <a href="https://youtu.be/jLOYlD3BiWk?si=qqTjI5B3ZtmMy8dT" target="_blank" class="podcast-card rv d2">
+          <div class="podcast-cover">
+            <img src="https://img.youtube.com/vi/jLOYlD3BiWk/mqdefault.jpg" alt="Подкаст 3">
+            <div class="podcast-play"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.5)"/><path d="M10 8L17 12L10 16Z" fill="#fff"/></svg></div>
+          </div>
+          <div class="podcast-info">
+            <div class="podcast-platform">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M22.5 6.2a2.85 2.85 0 0 0-2-2C18.9 4 12 4 12 4s-6.9 0-8.5.2a2.85 2.85 0 0 0-2 2C1.3 7.8 1.3 12 1.3 12s0 4.2.2 5.8a2.85 2.85 0 0 0 2 2C5.1 20 12 20 12 20s6.9 0 8.5-.2a2.85 2.85 0 0 0 2-2c.2-1.6.2-5.8.2-5.8s0-4.2-.2-5.8Z" fill="#FF0000"/><path d="M9.8 15.2V8.8L15.8 12l-6 3.2Z" fill="#fff"/></svg>
+              YouTube
+            </div>
+            <div class="podcast-title">Название подкаста 3</div>
+            <div class="podcast-desc">Описание выпуска — о чём говорили в этом выпуске</div>
+            <div class="podcast-arrow">Слушать →</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </div>
+</section>
 <section class="steps-s sec" id="steps">
   <div class="steps-inner">
     <div class="eyebrow-blue rv" style="display:inline-flex">Как попасть в тур</div>
