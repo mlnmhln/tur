@@ -519,10 +519,7 @@ document.querySelectorAll('.icard-head').forEach(function(h){
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target);}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
 
-/* ===== ЗАЯВКА В TELEGRAM-БОТ =====
-   Впишите сюда токен бота и chat_id (тот же бот, что для главной формы): */
-var BOT_TOKEN = '8596645291:AAG-DO2yeyN_yO2QRzR4WlfwoGk31rgmVkA';
-var CHAT_ID   = '-1004295435311';
+/* ===== ЗАЯВКА ЧЕРЕЗ CLOUDFLARE FUNCTION ===== */
 var TOUR_NAME = 'Дагестан';
 
 (function(){
@@ -555,28 +552,21 @@ var TOUR_NAME = 'Дагестан';
     if(!phoneI.value.trim()){markError(phoneWrap);valid=false;}
     if(!valid)return;
 
-    var now = new Date();
-    var dd = String(now.getDate()).padStart(2,'0');
-    var mm = String(now.getMonth()+1).padStart(2,'0');
-    var yyyy = now.getFullYear();
-    var hh = String(now.getHours()).padStart(2,'0');
-    var min = String(now.getMinutes()).padStart(2,'0');
-    var dateStr = dd+'.'+mm+'.'+yyyy+' '+hh+':'+min;
-
-    var text = '📋 Новая заявка (страница тура) — '+dateStr+'\n\n'+
-      '🧭 Тур: '+TOUR_NAME+'\n'+
-      '👤 Имя: '+nameI.value.trim()+'\n'+
-      '📞 Телефон: '+document.getElementById('bkCode').value+' '+phoneI.value.trim()+'\n'+
-      '💬 Telegram: '+(tgI.value.trim()||'—');
-
     submit.disabled=true;
     var orig=submit.innerHTML;
     submit.textContent='Отправляем…';
 
-    fetch('https://api.telegram.org/bot'+BOT_TOKEN+'/sendMessage',{
+    fetch('/api/lead',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({chat_id:CHAT_ID,text:text})
+      body:JSON.stringify({
+        source:'tour',
+        page:location.pathname,
+        tour:TOUR_NAME,
+        name:nameI.value.trim(),
+        phone:document.getElementById('bkCode').value+' '+phoneI.value.trim(),
+        telegram:tgI.value.trim()||'—'
+      })
     })
     .then(function(r){return r.json();})
     .then(function(res){
@@ -585,7 +575,7 @@ var TOUR_NAME = 'Дагестан';
         submit.style.background='#2a7a4b';
         nameI.value='';phoneI.value='';tgI.value='';document.getElementById('bkCode').selectedIndex=0;
         setTimeout(function(){close();submit.disabled=false;submit.innerHTML=orig;submit.style.background='';},1800);
-      } else { throw new Error('tg error'); }
+      } else { throw new Error('lead error'); }
     })
     .catch(function(){
       submit.textContent='Ошибка, попробуйте ещё раз';

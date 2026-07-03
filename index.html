@@ -1700,7 +1700,7 @@ window.addEventListener('scroll',function(){hdr.classList.toggle('scrolled',wind
       }
     });
     if(!valid) return;
-    // Реальная отправка выполняется ниже (Telegram)
+    // Отправка выполняется ниже через Cloudflare Function
   });
 })();
 
@@ -1907,10 +1907,8 @@ if(finalContainer){
 
 document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var id=this.getAttribute('href');if(id==='#')return;var t=document.querySelector(id);if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}});});
 
-// ── Отправка заявки в Telegram ──
+// -- Отправка заявки через Cloudflare Function --
 (function(){
-  var TG_TOKEN = '8596645291:AAG-DO2yeyN_yO2QRzR4WlfwoGk31rgmVkA';
-  var TG_CHAT = '-1004295435311';
   var btn = document.getElementById('bookingSubmit');
   if(!btn) return;
 
@@ -1924,40 +1922,29 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
       return;
     }
 
-    var email = document.getElementById('fEmail').value.trim() || '—';
-    var tg = document.getElementById('fTelegram').value.trim() || '—';
-    var dest = document.getElementById('fDest').value || '—';
-    var comment = document.getElementById('fComment').value.trim() || '—';
-
-    var now = new Date();
-    var dd = String(now.getDate()).padStart(2,'0');
-    var mm = String(now.getMonth()+1).padStart(2,'0');
-    var yyyy = now.getFullYear();
-    var hh = String(now.getHours()).padStart(2,'0');
-    var min = String(now.getMinutes()).padStart(2,'0');
-    var dateStr = dd+'.'+mm+'.'+yyyy+' '+hh+':'+min;
-
-    var text = '📋 Новая заявка — '+dateStr+'\n\n'+
-      '👤 Имя: '+name+'\n'+
-      '📞 Телефон: '+code+' '+phone+'\n'+
-      '✉️ E-mail: '+email+'\n'+
-      '💬 Telegram: '+tg+'\n'+
-      '🌍 Куда: '+dest+'\n'+
-      '📝 Комментарий: '+comment;
+    var payload = {
+      source: 'main',
+      page: location.pathname,
+      name: name,
+      phone: code + ' ' + phone,
+      email: document.getElementById('fEmail').value.trim() || '—',
+      telegram: document.getElementById('fTelegram').value.trim() || '—',
+      tour: document.getElementById('fDest').value || '—',
+      comment: document.getElementById('fComment').value.trim() || '—'
+    };
 
     btn.disabled = true;
     btn.textContent = 'Отправляем...';
 
-    fetch('https://api.telegram.org/bot'+TG_TOKEN+'/sendMessage', {
+    fetch('/api/lead', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({chat_id: TG_CHAT, text: text})
+      body: JSON.stringify(payload)
     })
     .then(function(r){ return r.json(); })
     .then(function(data){
       if(data.ok){
         btn.textContent = '✓ Заявка отправлена!';
-        // Очищаем форму
         document.getElementById('fName').value='';
         document.getElementById('fCode').selectedIndex=0;
         document.getElementById('fPhone').value='';
@@ -1970,10 +1957,10 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
           btn.textContent='Оставить заявку';
         }, 4000);
       } else {
-        throw new Error('TG error');
+        throw new Error('lead error');
       }
     })
-    .catch(function(err){
+    .catch(function(){
       btn.textContent='Ошибка, попробуйте ещё раз';
       btn.disabled=false;
       setTimeout(function(){ btn.textContent='Оставить заявку'; }, 3000);
