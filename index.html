@@ -321,10 +321,11 @@ header.hdr.scrolled .hdr-nav{background:linear-gradient(160deg,rgba(255,255,255,
 @media(max-width:1200px){.tcard{flex:0 0 calc((100% - 48px)/3)}}
 @media(max-width:900px){.tcard{flex:0 0 calc((100% - 24px)/2)}}
 @media(max-width:600px){
-  .hero-side{display:none}
-  .hero-cards-mobile{display:flex;gap:12px;width:100%;max-width:none;margin-bottom:22px;animation:none;opacity:1;transform:none}
-  .hero-cards-mobile .hcard{background:#fff;border:1px solid rgba(31,119,180,0.2);box-shadow:0 6px 18px rgba(31,119,180,.08)}
-  .hero-cards-mobile .hcard:hover{background:#fff}
+  .hero-side{display:flex;width:100%;align-self:stretch;margin-top:0}
+  .hero-cards{display:flex;width:100%;max-width:100%;gap:12px;animation:none;opacity:1;transform:none}
+  .hero-cards .hcard{min-width:0;background:rgba(255,253,248,0.10);border:1px solid rgba(255,255,255,0.6);box-shadow:none}
+  .hero-cards .hcard:hover{background:rgba(255,253,248,0.18)}
+  .hero-cards-mobile{display:none!important}
   .tours-track-wrap{padding:0 36px}
   .tcard{flex:0 0 calc((100% - 12px)/2)}
   .tours-track{gap:12px}
@@ -391,9 +392,9 @@ header.hdr.scrolled .hdr-nav{background:linear-gradient(160deg,rgba(255,255,255,
 @media(max-width:900px){.vibes-track{grid-template-columns:repeat(2,1fr)}.vibes-feats{grid-template-columns:1fr 1fr;gap:22px}}
 @media(max-width:600px){
   .vibes-track-wrap{overflow:hidden;margin-left:-14px;margin-right:-14px}
-  .vibes-track{display:flex!important;grid-template-columns:none!important;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 44px;scroll-padding:0 44px}
+  .vibes-track{display:flex!important;grid-template-columns:none!important;gap:14px;overflow-x:auto;scroll-behavior:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 44px;scroll-padding:0 44px}
   .vibes-track::-webkit-scrollbar{display:none}
-  .vibes-track .vcard{flex:0 0 78%!important;width:78%!important;scroll-snap-align:center}
+  .vibes-track .vcard{flex:0 0 78%!important;width:78%!important;scroll-snap-align:center;scroll-snap-stop:always}
   .vibes-arrow{display:flex}
   .vibes-arrow-prev{left:6px}
   .vibes-arrow-next{right:6px}
@@ -481,7 +482,7 @@ header.hdr.scrolled .hdr-nav{background:linear-gradient(160deg,rgba(255,255,255,
 .reset-banner{display:flex;align-items:center;background:rgba(31,119,180,0.07);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border:1px solid rgba(255,255,255,0.6);border-radius:16px;padding:24px 28px;box-shadow:0 12px 40px rgba(31,119,180,0.10)}
 .reset-banner p{font-size:clamp(16px,1.6vw,21px);font-weight:600;color:#1F77B4;line-height:1.55;letter-spacing:-.01em;margin:0}
 .reset-banner p span{color:#1F77B4}
-.reset-video{flex:0 0 33%;align-self:stretch;border-radius:16px;overflow:hidden;background:rgba(31,119,180,0.10);border:1px solid rgba(255,255,255,0.6);position:relative;display:flex;align-items:center;justify-content:center}
+.reset-video{flex:0 0 clamp(340px,38%,460px);align-self:stretch;border-radius:16px;overflow:hidden;background:rgba(31,119,180,0.10);border:1px solid rgba(255,255,255,0.6);position:relative;display:flex;align-items:center;justify-content:center}
 .reset-video video,.reset-video iframe,.reset-video img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border:none}
 .reset-video-ph{display:flex;flex-direction:column;align-items:center;gap:10px;color:#1F77B4;font-size:13px;font-weight:600;text-align:center;padding:14px;opacity:.7}
 .reset-video-ph svg{width:40px;height:40px}
@@ -491,9 +492,9 @@ header.hdr.scrolled .hdr-nav{background:linear-gradient(160deg,rgba(255,255,255,
 .reset-video-play svg{width:36px;height:36px;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5))}
 @media(max-width:860px){
   .reset-layout{flex-direction:column;gap:28px}
-  .reset-video{align-self:center;width:240px;max-width:70%;aspect-ratio:9/16;height:auto}
+  .reset-video{align-self:center;width:min(420px,100%);max-width:100%;aspect-ratio:9/16;height:auto}
 }
-@media(max-width:600px){.reset-s{padding:64px 18px}.reset-banner{padding:20px}.reset-video{width:200px}}
+@media(max-width:600px){.reset-s{padding:64px 18px}.reset-banner{padding:20px}.reset-video{width:min(340px,100%);max-width:100%}}
 .env-photo{position:relative;border-radius:20px;overflow:hidden;box-shadow:0 30px 80px rgba(60,50,49,.18);min-height:100%}
 .env-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
 .env-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:78px;height:78px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .25s,box-shadow .25s;box-shadow:0 12px 40px rgba(0,0,0,.3)}
@@ -851,6 +852,11 @@ footer::before{content:'';position:absolute;inset:0;border-radius:inherit;backgr
   }
   .hero-h1{font-size:clamp(30px,8.5vw,44px)}
   .why-h,.env-h,.tours-h,.vibes-h,.media-h,.reset-h{font-size:clamp(26px,7vw,34px)}
+  .final{padding:76px 18px}
+  .final-inner{max-width:100%}
+  .final .eyebrow-blue{font-size:14px;line-height:1.45;letter-spacing:.18em;margin-bottom:34px!important;justify-content:center;text-align:center}
+  .final-cards{grid-template-columns:1fr;gap:22px;margin-bottom:0}
+  .fcard{font-size:clamp(21px,5.6vw,26px);line-height:1.38;font-weight:700;text-align:left!important;padding:14px 0 14px 26px;border-left-width:4px;min-height:92px;align-items:center}
   img{max-width:100%}
 }
 @media(max-width:360px){
@@ -975,12 +981,14 @@ section[id]{scroll-margin-top:80px}
   .hero-h1{font-size:clamp(31px,9.5vw,42px);line-height:1.08;margin-bottom:22px;letter-spacing:0}
   .hero-sub{font-size:17px;line-height:1.42;margin-bottom:16px}
   .hero-text{font-size:14px;line-height:1.62;margin-bottom:26px}
-  .hero-cta{width:100%;flex-direction:column;align-items:stretch}
-  .btn-blue,.btn-out{width:100%;min-width:0;padding:14px 18px;font-size:14px}
-  .hero-cards-mobile{gap:10px}
-  .hero-cards-mobile .hcard{min-width:0;padding:14px 10px;border-radius:14px}
-  .hcard-num{font-size:25px}
-  .hcard-label{font-size:11px;line-height:1.3}
+  .hero-cta{width:100%;max-width:100%;flex-direction:column;align-items:stretch}
+  .btn-blue,.btn-out{width:100%;max-width:100%;min-width:0;min-height:58px;box-sizing:border-box;padding:18px 18px;font-size:14px}
+  .hero-side{width:100%;max-width:100%}
+  .hero-cards:not(.hero-cards-mobile){width:100%;max-width:100%;gap:12px;margin-top:0}
+  .hero-cards:not(.hero-cards-mobile) .hcard{min-width:0;padding:18px 16px;border-radius:16px;box-sizing:border-box}
+  .hero-cards-mobile{display:none!important}
+  .hcard-num{font-size:30px}
+  .hcard-label{font-size:12px;line-height:1.25}
   section{overflow-x:hidden}
   .wrap{width:100%;max-width:100%}
   .tours{padding-left:0;padding-right:0}
@@ -997,12 +1005,13 @@ section[id]{scroll-margin-top:80px}
   #tprev.tarrow-side{left:4px}
   #tnext.tarrow-side{right:4px}
   .tarrow:disabled{opacity:.42}
-  .tours-track-clip{overflow:hidden;padding:8px 4px 18px;scrollbar-width:none}
+  .tours-track-clip{overflow:hidden;padding:8px 0 18px;scrollbar-width:none}
   .tours-track-clip::-webkit-scrollbar{display:none}
   .tours-track{gap:14px}
-  .tcard{flex:0 0 86%;scroll-snap-align:start;border-radius:16px}
+  .tcard{flex:0 0 100%;scroll-snap-align:start;border-radius:16px}
   .tcard-media{height:190px}
   .tcard-body{padding:18px}
+  .tcard-price,.tcard-btn{width:100%;box-sizing:border-box}
   .tcard-name{font-size:22px;line-height:1.12}
   .tcard-desc{font-size:13px;min-height:auto}
   .vibes-track,.vibe-row{max-width:100%}
@@ -1021,7 +1030,7 @@ section[id]{scroll-margin-top:80px}
 }
 
 @media(max-width:360px){
-  .tcard{flex-basis:88%}
+  .tcard{flex-basis:100%}
   .tours-filters{grid-template-columns:1fr}
   .hero-h1{font-size:30px}
 }
@@ -1478,7 +1487,7 @@ section[id]{scroll-margin-top:80px}
           <option value="+66">🇹🇭 +66</option>
           <option value="+91">🇮🇳 +91</option>
         </select>
-        <input type="tel" id="fPhone" placeholder="(000) 000-00-00 *" required>
+        <input type="tel" id="fPhone" placeholder="(000) 000-00-00 *" inputmode="numeric" autocomplete="tel-national" maxlength="15" required>
       </div>
       <input class="ff" type="email" id="fEmail" placeholder="E-mail">
       <input class="ff" type="text" id="fTelegram" placeholder="@telegram">
@@ -1749,6 +1758,27 @@ window.addEventListener('scroll',function(){hdr.classList.toggle('scrolled',wind
 
 // Форма бронирования
 (function(){
+  var phone = document.getElementById('fPhone');
+  if(!phone) return;
+  function formatPhone(value){
+    var digits = (value || '').replace(/\D/g, '').slice(0, 10);
+    var out = '';
+    if(digits.length > 0) out += '(' + digits.slice(0, 3);
+    if(digits.length >= 3) out += ')';
+    if(digits.length > 3) out += ' ' + digits.slice(3, 6);
+    if(digits.length > 6) out += '-' + digits.slice(6, 8);
+    if(digits.length > 8) out += '-' + digits.slice(8, 10);
+    return out;
+  }
+  phone.addEventListener('input', function(){
+    phone.value = formatPhone(phone.value);
+  });
+  phone.addEventListener('paste', function(){
+    setTimeout(function(){ phone.value = formatPhone(phone.value); }, 0);
+  });
+})();
+
+(function(){
   var form = document.getElementById('bookingForm');
   var btn = document.getElementById('bookingSubmit');
   if(!form || !btn) return;
@@ -1984,6 +2014,12 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
     var name = (document.getElementById('fName').value || '').trim();
     var phone = (document.getElementById('fPhone').value || '').trim();
     var code = document.getElementById('fCode').value || '';
+    var phoneDigits = phone.replace(/\D/g, '');
+
+    if(phoneDigits.length < 10){
+      alert('Пожалуйста, заполните телефон полностью');
+      return;
+    }
 
     if(!name || !phone){
       alert('Пожалуйста, заполните имя и телефон');
@@ -2042,19 +2078,63 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
   var prev = document.getElementById('vibesPrev');
   var next = document.getElementById('vibesNext');
   if(!track || !prev || !next) return;
-  function step(){
-    var card = track.querySelector('.vcard');
-    if(!card) return track.clientWidth * 0.75;
-    var gap = parseInt(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 14, 10) || 14;
-    return card.getBoundingClientRect().width + gap;
+  var animating = false;
+  function cards(){return Array.prototype.slice.call(track.querySelectorAll('.vcard'));}
+  function targetFor(card){
+    return Math.max(0, card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2);
+  }
+  function currentIndex(){
+    var list = cards();
+    if(!list.length) return 0;
+    var current = track.scrollLeft;
+    var best = 0;
+    var bestDist = Infinity;
+    list.forEach(function(card, i){
+      var dist = Math.abs(targetFor(card) - current);
+      if(dist < bestDist){bestDist = dist; best = i;}
+    });
+    return best;
+  }
+  function ease(t){return 1 - Math.pow(1 - t, 3);}
+  function animateTo(left){
+    var start = track.scrollLeft;
+    var max = Math.max(0, track.scrollWidth - track.clientWidth);
+    var end = Math.max(0, Math.min(left, max));
+    var change = end - start;
+    var duration = Math.min(720, Math.max(420, Math.abs(change) * 1.25));
+    var started = performance.now();
+    if(Math.abs(change) < 1){update();return;}
+    animating = true;
+    prev.disabled = true;
+    next.disabled = true;
+    function frame(now){
+      var p = Math.min(1, (now - started) / duration);
+      track.scrollLeft = start + change * ease(p);
+      if(p < 1){
+        requestAnimationFrame(frame);
+      }else{
+        animating = false;
+        track.scrollLeft = end;
+        update();
+      }
+    }
+    requestAnimationFrame(frame);
   }
   function update(){
     var maxScroll = track.scrollWidth - track.clientWidth - 2;
+    if(animating) return;
     prev.disabled = track.scrollLeft <= 2;
     next.disabled = track.scrollLeft >= maxScroll;
   }
-  prev.addEventListener('click', function(){ track.scrollBy({left: -step(), behavior:'smooth'}); });
-  next.addEventListener('click', function(){ track.scrollBy({left: step(), behavior:'smooth'}); });
+  function go(dir){
+    if(animating) return;
+    var list = cards();
+    if(!list.length) return;
+    var idx = Math.max(0, Math.min(list.length - 1, currentIndex() + dir));
+    animateTo(targetFor(list[idx]));
+  }
+  prev.addEventListener('click', function(){ go(-1); });
+  next.addEventListener('click', function(){ go(1); });
   track.addEventListener('scroll', update, {passive:true});
   window.addEventListener('resize', update);
   update();
