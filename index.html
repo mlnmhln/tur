@@ -1056,22 +1056,86 @@ section[id]{scroll-margin-top:80px}
 (function(){
   var fill=document.getElementById('preloaderFill');
   var pre=document.getElementById('preloader');
-  var progress=0, loaded=false;
-  // плавно ползёт до 90%, пока страница грузится
+  var progress=0, loaded=false, assetsReady=false, windowReady=false;
+  var criticalSelectors=[
+    '.hero img',
+    '.tcard-media img',
+    '.reset-video img',
+    '.vcard-img-wrap img',
+    '.tatyana-photo img'
+  ];
+
+  function setProgress(value){
+    progress=Math.max(progress,Math.min(value,100));
+    if(fill) fill.style.width=progress+'%';
+  }
+
+  function decodeImage(img){
+    return new Promise(function(resolve){
+      function done(){
+        if(img.decode){
+          img.decode().then(resolve).catch(resolve);
+        }else{
+          resolve();
+        }
+      }
+      if(img.complete && img.naturalWidth>0){
+        done();
+        return;
+      }
+      img.addEventListener('load',done,{once:true});
+      img.addEventListener('error',resolve,{once:true});
+    });
+  }
+
+  function waitForCriticalImages(){
+    var seen={};
+    var imgs=[];
+    criticalSelectors.forEach(function(sel){
+      document.querySelectorAll(sel).forEach(function(img){
+        var src=img.currentSrc||img.src;
+        if(src && !seen[src]){
+          seen[src]=1;
+          imgs.push(img);
+        }
+      });
+    });
+    if(!imgs.length) return Promise.resolve();
+    var done=0;
+    return Promise.all(imgs.map(function(img){
+      return decodeImage(img).then(function(){
+        done++;
+        setProgress(20+(done/imgs.length)*72);
+      });
+    }));
+  }
+
+  function tryFinish(){
+    if(windowReady && assetsReady) finish();
+  }
+
+  // плавно ползёт до 88%, пока критичные изображения грузятся и декодируются
   var timer=setInterval(function(){
-    if(progress<90){progress+=Math.random()*8+2;if(progress>90)progress=90;fill.style.width=progress+'%';}
+    if(progress<88){setProgress(progress+Math.random()*5+1);}
   },180);
   function finish(){
     if(loaded)return;loaded=true;
     clearInterval(timer);
-    progress=100;fill.style.width='100%';
+    setProgress(100);
     setTimeout(function(){pre.classList.add('hidden');document.body.style.overflow='';},450);
     setTimeout(function(){if(pre&&pre.parentNode)pre.parentNode.removeChild(pre);},1100);
   }
   document.body.style.overflow='hidden';
-  window.addEventListener('load',function(){setTimeout(finish,300);});
-  // страховка: не держать дольше 7 сек
-  setTimeout(finish,7000);
+  waitForCriticalImages().then(function(){
+    assetsReady=true;
+    tryFinish();
+  });
+  window.addEventListener('load',function(){
+    windowReady=true;
+    tryFinish();
+  });
+  // страховка: не держать дольше 12 сек даже на медленном соединении
+  setTimeout(finish,12000);
 })();
 </script>
 
@@ -1183,15 +1247,15 @@ section[id]{scroll-margin-top:80px}
       <button class="tarrow tarrow-side" id="tnext" aria-label="Вперёд"><svg viewBox="0 0 20 20" fill="none"><path d="M8 5L13 10L8 15" stroke="#1F77B4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="tours-track-clip">
       <div class="tours-track" id="ttrack">
-        <a class="tcard" href="dagestan.html" data-region="rf" data-days="7" data-price="65000" data-name="Дагестан"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Дагестан.png" alt="Дагестан"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Дагестан</span><div class="tcard-name">Дагестан</div><div class="tcard-desc">Море, горы и глубокая работа с запросами</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">7 дней</span></div><div class="tmeta-row"><span class="dates">02.07 — 08.07.2026</span></div></div><div class="tcard-price">От 65&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
-        <a class="tcard" href="karelia.html" data-region="rf" data-days="6" data-price="98000" data-name="Карелия"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Карелия.png" alt="Карелия"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Карелия</span><div class="tcard-name">Карелия</div><div class="tcard-desc">Природа, тишина и внутренние состояния</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">6 дней</span></div><div class="tmeta-row"><span class="dates">12.07 — 17.07.2026</span></div></div><div class="tcard-price">От 98&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
-        <a class="tcard" href="bodrum.html" data-region="zarub" data-days="7" data-price="190000" data-name="Бодрум"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Бодрум.png" alt="Бодрум"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Бодрум</span><div class="tcard-name">Бодрум</div><div class="tcard-desc">Роскошный релакс и состояние изобилия</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">7 дней</span></div><div class="tmeta-row"><span class="dates">22.07 — 28.07.2026</span></div></div><div class="tcard-price">От 190&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
-        <a class="tcard" href="kaliningrad.html" data-region="rf" data-days="7" data-price="89000" data-name="Калининград"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Калининград.png" alt="Калининград"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Калининград</span><div class="tcard-name">Калининград</div><div class="tcard-desc">Балтика, архитектура и мягкая перезагрузка</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">7 дней</span></div><div class="tmeta-row"><span class="dates">07.08 — 13.08.2026</span></div></div><div class="tcard-price">От 89&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
-        <a class="tcard" href="kenya.html" data-region="zarub" data-days="11" data-price="250000" data-name="Кения"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Кения.png" alt="Кения"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Кения</span><div class="tcard-name">Кения</div><div class="tcard-desc">Сафари, саванна и встреча с собой настоящим</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">11 дней</span></div><div class="tmeta-row"><span class="dates">23.08 — 02.09.2026</span></div></div><div class="tcard-price">От 250&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
-        <a class="tcard" href="china.html" data-region="zarub" data-days="16" data-price="350000" data-name="Китай"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Китай.png" alt="Китай"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Китай</span><div class="tcard-name">Китай</div><div class="tcard-desc">Масштаб, гибкость и квантовый скачок</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">16 дней</span></div><div class="tmeta-row"><span class="dates">10.09 — 25.09.2026</span></div></div><div class="tcard-price">От 350&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
-        <a class="tcard" href="japan.html" data-region="zarub" data-days="7" data-price="180000" data-name="Япония"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Япония.png" alt="Япония"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Япония</span><div class="tcard-name">Япония</div><div class="tcard-desc">Страна будущего и новая масштабная реальность</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">7 дней</span></div><div class="tmeta-row"><span class="dates">25.09 — 01.10.2026</span></div></div><div class="tcard-price">От 180&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
-        <a class="tcard" href="egypt.html" data-region="zarub" data-days="11" data-price="180000" data-name="Египет"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Египет.png" alt="Египет"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Египет</span><div class="tcard-name">Египет</div><div class="tcard-desc">Древняя магия, места силы и премиальный комфорт</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">11 дней</span></div><div class="tmeta-row"><span class="dates">20.10 — 30.10.2026</span></div></div><div class="tcard-price">От 180&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
-        <a class="tcard" href="mauritius.html" data-region="zarub" data-days="12" data-price="190000" data-name="Маврикий"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Маврикий.png" alt="Маврикий"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Маврикий</span><div class="tcard-name">Маврикий</div><div class="tcard-desc">Тропический рай и выход из привычной матрицы</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">12 дней</span></div><div class="tmeta-row"><span class="dates">24.11 — 05.12.2026</span></div></div><div class="tcard-price">От 190&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
+        <a class="tcard" href="dagestan.html" data-region="rf" data-days="7" data-price="65000" data-name="Дагестан"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Дагестан.jpg" alt="Дагестан"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Дагестан</span><div class="tcard-name">Дагестан</div><div class="tcard-desc">Море, горы и глубокая работа с запросами</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">7 дней</span></div><div class="tmeta-row"><span class="dates">02.07 — 08.07.2026</span></div></div><div class="tcard-price">От 65&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
+        <a class="tcard" href="karelia.html" data-region="rf" data-days="6" data-price="98000" data-name="Карелия"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Карелия.jpg" alt="Карелия"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Карелия</span><div class="tcard-name">Карелия</div><div class="tcard-desc">Природа, тишина и внутренние состояния</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">6 дней</span></div><div class="tmeta-row"><span class="dates">12.07 — 17.07.2026</span></div></div><div class="tcard-price">От 98&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
+        <a class="tcard" href="bodrum.html" data-region="zarub" data-days="7" data-price="190000" data-name="Бодрум"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Бодрум.jpg" alt="Бодрум"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Бодрум</span><div class="tcard-name">Бодрум</div><div class="tcard-desc">Роскошный релакс и состояние изобилия</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">7 дней</span></div><div class="tmeta-row"><span class="dates">22.07 — 28.07.2026</span></div></div><div class="tcard-price">От 190&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
+        <a class="tcard" href="kaliningrad.html" data-region="rf" data-days="7" data-price="89000" data-name="Калининград"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Калининград.jpg" alt="Калининград"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Калининград</span><div class="tcard-name">Калининград</div><div class="tcard-desc">Балтика, архитектура и мягкая перезагрузка</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">7 дней</span></div><div class="tmeta-row"><span class="dates">07.08 — 13.08.2026</span></div></div><div class="tcard-price">От 89&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
+        <a class="tcard" href="kenya.html" data-region="zarub" data-days="11" data-price="250000" data-name="Кения"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Кения.jpg" alt="Кения"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Кения</span><div class="tcard-name">Кения</div><div class="tcard-desc">Сафари, саванна и встреча с собой настоящим</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">11 дней</span></div><div class="tmeta-row"><span class="dates">23.08 — 02.09.2026</span></div></div><div class="tcard-price">От 250&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
+        <a class="tcard" href="china.html" data-region="zarub" data-days="16" data-price="350000" data-name="Китай"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Китай.jpg" alt="Китай"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Китай</span><div class="tcard-name">Китай</div><div class="tcard-desc">Масштаб, гибкость и квантовый скачок</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">16 дней</span></div><div class="tmeta-row"><span class="dates">10.09 — 25.09.2026</span></div></div><div class="tcard-price">От 350&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
+        <a class="tcard" href="japan.html" data-region="zarub" data-days="7" data-price="180000" data-name="Япония"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Япония.jpg" alt="Япония"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Япония</span><div class="tcard-name">Япония</div><div class="tcard-desc">Страна будущего и новая масштабная реальность</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">7 дней</span></div><div class="tmeta-row"><span class="dates">25.09 — 01.10.2026</span></div></div><div class="tcard-price">От 180&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
+        <a class="tcard" href="egypt.html" data-region="zarub" data-days="11" data-price="180000" data-name="Египет"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Египет.jpg" alt="Египет"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Египет</span><div class="tcard-name">Египет</div><div class="tcard-desc">Древняя магия, места силы и премиальный комфорт</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">11 дней</span></div><div class="tmeta-row"><span class="dates">20.10 — 30.10.2026</span></div></div><div class="tcard-price">От 180&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
+        <a class="tcard" href="mauritius.html" data-region="zarub" data-days="12" data-price="190000" data-name="Маврикий"><div class="tcard-media"><img loading="eager" decoding="async" src="images/Маврикий.jpg" alt="Маврикий"><div class="tcard-badges"></div></div><div class="tcard-body"><span class="tcard-loc"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6C3.5 9.5 8 14.5 8 14.5C8 14.5 12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5Z" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="6" r="1.6" stroke="currentColor" stroke-width="1.3"/></svg>Маврикий</span><div class="tcard-name">Маврикий</div><div class="tcard-desc">Тропический рай и выход из привычной матрицы</div><div class="tcard-meta"><div class="tmeta-row"><span class="val">12 дней</span></div><div class="tmeta-row"><span class="dates">24.11 — 05.12.2026</span></div></div><div class="tcard-price">От 190&nbsp;000 ₽</div><div class="tcard-btnwrap"><span class="tcard-btn">Смотреть тур <svg viewBox="0 0 20 20" fill="none"><path d="M4 10H16M11 5L16 10L11 15" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div></a>
       </div>
       </div>
     </div>
@@ -1218,8 +1282,8 @@ section[id]{scroll-margin-top:80px}
           <p>Вы приезжаете за путешествием. <span>Уезжаете с новым взглядом на свою жизнь, бизнес и собственные возможности.</span></p>
         </div>
       </div>
-      <div class="reset-video rv" id="resetVideo" data-vk="https://vkvideo.ru/clip_ext.php?oid=-239473409&id=456239023&autoplay=1" data-poster="images/Скрин 5.png" style="cursor:pointer">
-        <img src="images/Скрин 5.png" alt="Видео">
+      <div class="reset-video rv" id="resetVideo" data-vk="https://vkvideo.ru/clip_ext.php?oid=-239473409&id=456239023&autoplay=1" data-poster="images/Скрин 5.jpg?v=20260704-3" style="cursor:pointer">
+        <img loading="eager" fetchpriority="high" decoding="sync" src="images/Скрин 5.jpg?v=20260704-3" alt="Видео">
         <div class="reset-video-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
       </div>
     </div>
@@ -1306,24 +1370,24 @@ section[id]{scroll-margin-top:80px}
       <button class="vibes-arrow vibes-arrow-prev" id="vibesPrev" aria-label="Назад"><svg viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <button class="vibes-arrow vibes-arrow-next" id="vibesNext" aria-label="Вперёд"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="vibes-track" id="vibesTrack">
-        <div class="vcard rv" data-vk="https://vkvideo.ru/clip_ext.php?oid=-239473409&id=456239019&autoplay=1" data-poster="images/Скрин 1.png">
+        <div class="vcard rv" data-vk="https://vkvideo.ru/clip_ext.php?oid=-239473409&id=456239019&autoplay=1" data-poster="images/Скрин 1.jpg?v=20260704-3">
           <div class="vcard-img-wrap">
-            <img src="images/Скрин 1.png" alt="КИТАЙ"><div class="vcard-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
+            <img loading="eager" fetchpriority="high" decoding="sync" src="images/Скрин 1.jpg?v=20260704-3" alt="КИТАЙ"><div class="vcard-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
           </div>
         </div>
-        <div class="vcard rv d1" data-vk="https://vkvideo.ru/clip_ext.php?oid=-239473409&id=456239021&autoplay=1" data-poster="images/Скрин 2.png">
+        <div class="vcard rv d1" data-vk="https://vkvideo.ru/clip_ext.php?oid=-239473409&id=456239021&autoplay=1" data-poster="images/Скрин 2.jpg?v=20260704-3">
           <div class="vcard-img-wrap">
-            <img src="images/Скрин 2.png" alt="ЯПОНИЯ"><div class="vcard-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
+            <img loading="eager" fetchpriority="high" decoding="sync" src="images/Скрин 2.jpg?v=20260704-3" alt="ЯПОНИЯ"><div class="vcard-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
           </div>
         </div>
-        <div class="vcard rv d2" data-vk="https://vkvideo.ru/clip_ext.php?oid=-239473409&id=456239020&autoplay=1" data-poster="images/Скрин 3.png">
+        <div class="vcard rv d2" data-vk="https://vkvideo.ru/clip_ext.php?oid=-239473409&id=456239020&autoplay=1" data-poster="images/Скрин 3.jpg?v=20260704-3">
           <div class="vcard-img-wrap">
-            <img src="images/Скрин 3.png" alt="ЕГИПЕТ"><div class="vcard-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
+            <img loading="eager" fetchpriority="high" decoding="sync" src="images/Скрин 3.jpg?v=20260704-3" alt="ЕГИПЕТ"><div class="vcard-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
           </div>
         </div>
-        <div class="vcard rv d1" data-vk="https://vkvideo.ru/clip_ext.php?oid=-239473409&id=456239022&autoplay=1" data-poster="images/Скрин 4.png">
+        <div class="vcard rv d1" data-vk="https://vkvideo.ru/clip_ext.php?oid=-239473409&id=456239022&autoplay=1" data-poster="images/Скрин 4.jpg?v=20260704-3">
           <div class="vcard-img-wrap">
-            <img src="images/Скрин 4.png" alt="ТАИЛАНД"><div class="vcard-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
+            <img loading="eager" fetchpriority="high" decoding="sync" src="images/Скрин 4.jpg?v=20260704-3" alt="ТАИЛАНД"><div class="vcard-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
           </div>
         </div>
       </div>
@@ -1364,7 +1428,7 @@ section[id]{scroll-margin-top:80px}
       </div>
     </div>
     <div class="env-photo rv d1">
-      <img src="images/Среда.png" alt="Среда сильных людей">
+      <img src="images/Среда.jpg" alt="Среда сильных людей">
     </div>
     </div>
   </div>
@@ -1429,7 +1493,7 @@ section[id]{scroll-margin-top:80px}
 <section class="founder" id="tatyana">
   <div class="founder-inner">
     <div class="fi-col rv">
-      <img src="images/Фото Татьяны.png" alt="Татьяна Звягина">
+      <img src="images/Фото Татьяны.jpg" alt="Татьяна Звягина">
     </div>
     <div class="fr">
       <div class="eyebrow-blue rv">Автор туров</div>
