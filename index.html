@@ -977,12 +977,13 @@ section[id]{scroll-margin-top:80px}
   .hdr-actions{gap:8px}
   .hdr-nav{right:10px;left:10px;min-width:0}
   .hero{min-height:auto}
-  .hero-inner{padding:112px 18px 48px;min-height:100svh;flex-direction:column;align-items:flex-start;gap:22px}
-  .hero-h1{font-size:clamp(31px,9.5vw,42px);line-height:1.08;margin-bottom:22px;letter-spacing:0}
-  .hero-sub{font-size:17px;line-height:1.42;margin-bottom:16px}
-  .hero-text{font-size:14px;line-height:1.62;margin-bottom:26px}
-  .hero-cta{width:100%;max-width:100%;flex-direction:column;align-items:stretch}
-  .btn-blue,.btn-out{width:100%;max-width:100%;min-width:0;min-height:58px;box-sizing:border-box;padding:18px 18px;font-size:14px}
+  .hero-inner{width:100%;max-width:100%;padding:112px 18px 48px;min-height:100svh;flex-direction:column;align-items:flex-start;gap:22px;overflow:hidden}
+  .hero-text-col{width:100%;max-width:100%;min-width:0}
+  .hero-h1{font-size:clamp(32px,7.4vw,38px);line-height:1.1;margin-bottom:22px;letter-spacing:0;max-width:100%;overflow-wrap:break-word;hyphens:auto}
+  .hero-sub{font-size:18px;line-height:1.42;margin-bottom:16px}
+  .hero-text{font-size:16px;line-height:1.58;margin-bottom:26px}
+  .hero-cta{width:100%;max-width:100%;flex-direction:column;align-items:center}
+  .hero-cta .btn-blue,.hero-cta .btn-out{width:100%;max-width:340px;min-width:0;min-height:58px;box-sizing:border-box;padding:18px 18px;font-size:15px;justify-content:center;text-align:center}
   .hero-side{width:100%;max-width:100%}
   .hero-cards:not(.hero-cards-mobile){width:100%;max-width:100%;gap:12px;margin-top:0}
   .hero-cards:not(.hero-cards-mobile) .hcard{min-width:0;padding:18px 16px;border-radius:16px;box-sizing:border-box}
@@ -1027,6 +1028,15 @@ section[id]{scroll-margin-top:80px}
   .media-cta .yt-btn{width:100%;white-space:normal}
   .final-inner{padding-left:18px;padding-right:18px}
   .footer-grid{grid-template-columns:1fr!important;gap:26px}
+
+  .tours-h,.why-h,.env-h,.vibes-h,.media-h,.reset-h,.form-head h2,.h2-big{font-size:32px!important;line-height:1.12!important;letter-spacing:0!important}
+  .tours-sub,.vibes-sub,.media-role,.fr-role,.hero-sub{font-size:18px!important;line-height:1.45!important}
+  .hero-text,.reset-lead,.reset-mid,.reset-note,.why-quote p,.env-card-t,.vibes-feat-d,.step-d,.media-bio,.media-bio-closing,.form-disclaimer{font-size:16px!important;line-height:1.58!important}
+  .podcast-title,.tcard-name,.vibes-feat-t,.step-t{font-size:17px!important;line-height:1.28!important}
+  .eyebrow-blue,.fr-eyebrow,.fn-cap,.final-h,.foot-ct{font-size:13px!important;line-height:1.35!important;letter-spacing:.14em!important}
+  .btn-blue,.btn-out,.yt-btn,.tcard-btn,.form-submit{max-width:340px;box-sizing:border-box}
+  .media-cta,.final-cta{align-items:center}
+  .media-cta .yt-btn,.final-cta .btn-blue,.final-cta .btn-out{width:100%;max-width:340px;white-space:normal}
 }
 
 @media(max-width:360px){
