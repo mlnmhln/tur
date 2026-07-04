@@ -304,9 +304,8 @@ header.hdr.scrolled .hdr-nav{background:linear-gradient(160deg,rgba(255,255,255,
 .diff-q{width:16px;height:16px;border-radius:50%;background:#EAF3FA;color:#1F77B4;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-left:2px}
 /* price */
 .tcard-price{background:#F4F2EE;border-radius:12px;padding:13px;text-align:center;font-size:16px;font-weight:800;color:var(--text-dark);letter-spacing:-.01em}
-/* hover button (water/glass) — slides up below price */
-.tcard-btnwrap{max-height:0;overflow:hidden;transition:max-height .65s cubic-bezier(.16,1,.3,1)}
-.tcard:hover .tcard-btnwrap{max-height:70px}
+/* tour button */
+.tcard-btnwrap{max-height:80px;overflow:visible;transition:max-height .65s cubic-bezier(.16,1,.3,1)}
 .tcard-btn{margin-top:10px;position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--fb);font-size:15px;font-weight:700;color:#fff;background:var(--water-bg);border:1px solid rgba(255,255,255,0.35);padding:14px;border-radius:8px;text-decoration:none;text-shadow:0 1px 2px rgba(13,70,110,0.45);box-shadow:0 10px 26px rgba(31,119,180,0.4),inset 0 1px 1px rgba(255,255,255,0.6),inset 0 -5px 12px rgba(13,70,110,0.45)}
 .tcard-btn::before{content:'';position:absolute;left:0;right:0;top:0;height:48%;border-radius:8px 8px 30% 30%/8px 8px 9px 9px;background:var(--water-gloss);opacity:.9;pointer-events:none;z-index:1}
 .tcard-btn::after{content:'';position:absolute;top:0;bottom:0;left:-60%;width:45%;transform:skewX(-18deg);background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,0.5),rgba(255,255,255,0));pointer-events:none;z-index:2;transition:left .7s cubic-bezier(0.22,1,0.36,1)}
@@ -992,11 +991,16 @@ section[id]{scroll-margin-top:80px}
   .tf-group{min-width:0;width:100%;flex:none}
   .tf-reset{grid-column:1/-1;width:100%}
   .tours-track-wrap{padding:0}
-  .tarrow{display:none!important}
-  .tours-track-clip{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:8px 4px 18px;scrollbar-width:none}
+  .tarrow{display:flex!important;width:38px;height:38px;background:var(--water-bg);border:1px solid rgba(255,255,255,0.55);box-shadow:0 10px 24px rgba(31,119,180,0.34);z-index:20}
+  .tarrow svg{width:17px;height:17px}
+  .tarrow.tarrow-side{top:42%}
+  #tprev.tarrow-side{left:4px}
+  #tnext.tarrow-side{right:4px}
+  .tarrow:disabled{opacity:.42}
+  .tours-track-clip{overflow:hidden;padding:8px 4px 18px;scrollbar-width:none}
   .tours-track-clip::-webkit-scrollbar{display:none}
-  .tours-track{transform:none!important;gap:14px}
-  .tcard{flex:0 0 84%;scroll-snap-align:start;border-radius:16px}
+  .tours-track{gap:14px}
+  .tcard{flex:0 0 86%;scroll-snap-align:start;border-radius:16px}
   .tcard-media{height:190px}
   .tcard-body{padding:18px}
   .tcard-name{font-size:22px;line-height:1.12}
@@ -1211,15 +1215,15 @@ section[id]{scroll-margin-top:80px}
         <label class="tf-label">Направление</label>
         <select class="tf-select" id="fRegion">
           <option value="">Все направления</option>
-          <option value="rf" data-name="Дагестан">Дагестан</option>
-          <option value="rf" data-name="Карелия">Карелия</option>
-          <option value="zarub" data-name="Бодрум">Бодрум</option>
-          <option value="rf" data-name="Калининград">Калининград</option>
-          <option value="zarub" data-name="Кения">Кения</option>
-          <option value="zarub" data-name="Китай">Китай</option>
-          <option value="zarub" data-name="Япония">Япония</option>
-          <option value="zarub" data-name="Египет">Египет</option>
-          <option value="zarub" data-name="Маврикий">Маврикий</option>
+          <option value="name:Дагестан" data-name="Дагестан">Дагестан</option>
+          <option value="name:Карелия" data-name="Карелия">Карелия</option>
+          <option value="name:Бодрум" data-name="Бодрум">Бодрум</option>
+          <option value="name:Калининград" data-name="Калининград">Калининград</option>
+          <option value="name:Кения" data-name="Кения">Кения</option>
+          <option value="name:Китай" data-name="Китай">Китай</option>
+          <option value="name:Япония" data-name="Япония">Япония</option>
+          <option value="name:Египет" data-name="Египет">Египет</option>
+          <option value="name:Маврикий" data-name="Маврикий">Маврикий</option>
         </select>
       </div>
       <div class="tf-group">
@@ -1821,7 +1825,7 @@ if(hb){
   var allCards=Array.prototype.slice.call(track.children);
   var idx=0;
   function visibleCards(){return allCards.filter(function(c){return c.style.display!=='none';});}
-  function perView(){var w=window.innerWidth;if(w<=600)return 2;if(w<=900)return 2;if(w<=1200)return 3;return 4;}
+  function perView(){var w=window.innerWidth;if(w<=600)return 1;if(w<=900)return 2;if(w<=1200)return 3;return 4;}
   function maxIdx(){return Math.max(0,visibleCards().length-perView());}
   function update(){
     var vis=visibleCards();
