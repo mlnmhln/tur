@@ -655,6 +655,50 @@ select.ff{appearance:none;cursor:pointer;color:#2A2E35;background-image:url("dat
 .step-t{font-size:15px;font-weight:700;color:var(--text-dark);margin-bottom:8px}
 .step-d{font-size:13.5px;line-height:1.6;color:var(--text-muted)}
 
+/* ════════ REVIEWS ════════ */
+.reviews-s{background:#f6f6f6;padding:100px 18px}
+.reviews-inner{max-width:1480px;margin:0 auto}
+.reviews-head{text-align:center;margin-bottom:52px}
+.reviews-sub{font-size:17px;color:var(--text-muted);line-height:1.6;max-width:560px;margin:0 auto}
+.revs-track-wrap{position:relative;overflow:hidden;margin-bottom:80px}
+.revs-track{display:flex;gap:14px;overflow-x:auto;scroll-behavior:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 2px}
+.revs-track::-webkit-scrollbar{display:none}
+.rev-shot{flex:0 0 calc((100% - 42px)/4);min-width:0;scroll-snap-align:start;border-radius:20px;overflow:hidden;background:#fff;border:1px solid rgba(60,50,49,.07);box-shadow:0 14px 40px rgba(60,50,49,.12);transition:transform .3s,box-shadow .3s}
+.rev-shot:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(60,50,49,.18)}
+.rev-shot-img{position:relative;aspect-ratio:9/16;width:100%;overflow:hidden}
+.rev-shot-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.rev-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(160deg,#eef4f9 0%,#e2ecf4 55%,#d5e4f0 100%)}
+.rev-ph svg{width:44px;height:44px;opacity:.55}
+.rev-ph span{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);opacity:.65}
+.rev-ph-dark{background:linear-gradient(165deg,#1c2b3a 0%,#13507F 60%,#1F77B4 130%)}
+.rev-ph-dark span{color:rgba(255,255,255,.75)}
+.rev-ph-dark svg{opacity:.85}
+.revs-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:42px;height:42px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#1F77B4;color:#fff;box-shadow:0 6px 18px rgba(31,119,180,.35);transition:background .2s,opacity .2s,transform .15s}
+.revs-arrow:active{transform:translateY(-50%) scale(.92)}
+.revs-arrow svg{width:22px;height:22px}
+.revs-arrow-prev{left:6px}
+.revs-arrow-next{right:6px}
+.revs-arrow[disabled]{opacity:.35;pointer-events:none}
+.revv-h3{font-family:var(--fb);font-size:clamp(24px,2.6vw,34px);font-weight:800;color:var(--text-dark);letter-spacing:-.01em;text-align:center;margin-bottom:36px}
+.revv-h3 em{font-style:normal;color:var(--blue)}
+.revv-track-wrap{position:relative;overflow:hidden}
+.revv-track{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.revv-track .vcard-img-wrap{aspect-ratio:9/16}
+@media(max-width:900px){
+  .rev-shot{flex-basis:calc((100% - 28px)/3)}
+  .revv-track{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .reviews-s{padding:72px 14px}
+  .revs-track-wrap,.revv-track-wrap{overflow:hidden;margin-left:-14px;margin-right:-14px}
+  .revs-track{padding:4px 44px;scroll-padding:0 44px}
+  .rev-shot{flex:0 0 78%;scroll-snap-align:center;scroll-snap-stop:always}
+  .revs-track-wrap{margin-bottom:64px}
+  .revv-track{display:flex!important;grid-template-columns:none!important;gap:14px;overflow-x:auto;scroll-behavior:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 44px;scroll-padding:0 44px}
+  .revv-track::-webkit-scrollbar{display:none}
+  .revv-track .vcard{flex:0 0 78%!important;width:78%!important;scroll-snap-align:center;scroll-snap-stop:always}
+}
+
 /* ════════ FINAL ════════ */
 .final{background:#f6f6f6;padding:56px 36px;text-align:center;position:relative;overflow:hidden}
 .final::before{content:none}
@@ -1623,6 +1667,61 @@ section[id]{scroll-margin-top:80px}
   </div>
 </section>
 
+<section class="reviews-s sec accent accent-l" id="reviews">
+  <div class="reviews-inner">
+    <div class="reviews-head rv">
+      <div class="eyebrow-blue">Отзывы участников</div>
+      <h2 class="vibes-h">Что говорят <em>после тура</em></h2>
+      <p class="reviews-sub">Честные впечатления людей, которые уже прошли этот опыт — своими словами и на камеру</p>
+    </div>
+
+    <div class="revs-track-wrap rv d1">
+      <button class="revs-arrow revs-arrow-prev" id="revsPrev" aria-label="Назад"><svg viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="revs-arrow revs-arrow-next" id="revsNext" aria-label="Вперёд"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="revs-track" id="revsTrack">
+        <div class="rev-shot"><div class="rev-shot-img"><div class="rev-ph"><svg viewBox="0 0 24 24" fill="none"><path d="M21 11.5C21 16.2 17 20 12 20C10.7 20 9.5 19.8 8.4 19.3L3 20L4.5 15.8C3.6 14.5 3 13.1 3 11.5C3 6.8 7 3 12 3C17 3 21 6.8 21 11.5Z" stroke="#1F77B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Скрин отзыва</span></div></div></div>
+        <div class="rev-shot"><div class="rev-shot-img"><div class="rev-ph"><svg viewBox="0 0 24 24" fill="none"><path d="M21 11.5C21 16.2 17 20 12 20C10.7 20 9.5 19.8 8.4 19.3L3 20L4.5 15.8C3.6 14.5 3 13.1 3 11.5C3 6.8 7 3 12 3C17 3 21 6.8 21 11.5Z" stroke="#1F77B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Скрин отзыва</span></div></div></div>
+        <div class="rev-shot"><div class="rev-shot-img"><div class="rev-ph"><svg viewBox="0 0 24 24" fill="none"><path d="M21 11.5C21 16.2 17 20 12 20C10.7 20 9.5 19.8 8.4 19.3L3 20L4.5 15.8C3.6 14.5 3 13.1 3 11.5C3 6.8 7 3 12 3C17 3 21 6.8 21 11.5Z" stroke="#1F77B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Скрин отзыва</span></div></div></div>
+        <div class="rev-shot"><div class="rev-shot-img"><div class="rev-ph"><svg viewBox="0 0 24 24" fill="none"><path d="M21 11.5C21 16.2 17 20 12 20C10.7 20 9.5 19.8 8.4 19.3L3 20L4.5 15.8C3.6 14.5 3 13.1 3 11.5C3 6.8 7 3 12 3C17 3 21 6.8 21 11.5Z" stroke="#1F77B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Скрин отзыва</span></div></div></div>
+        <div class="rev-shot"><div class="rev-shot-img"><div class="rev-ph"><svg viewBox="0 0 24 24" fill="none"><path d="M21 11.5C21 16.2 17 20 12 20C10.7 20 9.5 19.8 8.4 19.3L3 20L4.5 15.8C3.6 14.5 3 13.1 3 11.5C3 6.8 7 3 12 3C17 3 21 6.8 21 11.5Z" stroke="#1F77B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Скрин отзыва</span></div></div></div>
+        <div class="rev-shot"><div class="rev-shot-img"><div class="rev-ph"><svg viewBox="0 0 24 24" fill="none"><path d="M21 11.5C21 16.2 17 20 12 20C10.7 20 9.5 19.8 8.4 19.3L3 20L4.5 15.8C3.6 14.5 3 13.1 3 11.5C3 6.8 7 3 12 3C17 3 21 6.8 21 11.5Z" stroke="#1F77B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Скрин отзыва</span></div></div></div>
+      </div>
+    </div>
+
+    <h3 class="revv-h3 rv">Видео-отзывы <em>участников</em></h3>
+    <div class="revv-track-wrap rv d1">
+      <button class="vibes-arrow vibes-arrow-prev" id="revvPrev" aria-label="Назад"><svg viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="vibes-arrow vibes-arrow-next" id="revvNext" aria-label="Вперёд"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="revv-track" id="revvTrack">
+        <div class="vcard" data-vk="">
+          <div class="vcard-img-wrap">
+            <div class="rev-ph rev-ph-dark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,.85)" stroke-width="1.4"/><path d="M10 8.5L15.5 12L10 15.5Z" fill="rgba(255,255,255,.85)"/></svg><span>Видео-отзыв</span></div>
+            <div class="vcard-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
+          </div>
+        </div>
+        <div class="vcard" data-vk="">
+          <div class="vcard-img-wrap">
+            <div class="rev-ph rev-ph-dark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,.85)" stroke-width="1.4"/><path d="M10 8.5L15.5 12L10 15.5Z" fill="rgba(255,255,255,.85)"/></svg><span>Видео-отзыв</span></div>
+            <div class="vcard-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
+          </div>
+        </div>
+        <div class="vcard" data-vk="">
+          <div class="vcard-img-wrap">
+            <div class="rev-ph rev-ph-dark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,.85)" stroke-width="1.4"/><path d="M10 8.5L15.5 12L10 15.5Z" fill="rgba(255,255,255,.85)"/></svg><span>Видео-отзыв</span></div>
+            <div class="vcard-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
+          </div>
+        </div>
+        <div class="vcard" data-vk="">
+          <div class="vcard-img-wrap">
+            <div class="rev-ph rev-ph-dark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,.85)" stroke-width="1.4"/><path d="M10 8.5L15.5 12L10 15.5Z" fill="rgba(255,255,255,.85)"/></svg><span>Видео-отзыв</span></div>
+            <div class="vcard-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="closing-quote-s">
   <div class="closing-quote-inner">
     <div class="cq-left rv">
@@ -2148,6 +2247,78 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
   track.addEventListener('scroll', update, {passive:true});
   window.addEventListener('resize', update);
   update();
+})();
+
+// ── Отзывы: карусели (скрины + видео) ──
+(function(){
+  function initCarousel(trackId, prevId, nextId, cardSel){
+    var track = document.getElementById(trackId);
+    var prev = document.getElementById(prevId);
+    var next = document.getElementById(nextId);
+    if(!track || !prev || !next) return;
+    var animating = false;
+    function cards(){return Array.prototype.slice.call(track.querySelectorAll(cardSel));}
+    function targetFor(card){
+      return Math.max(0, card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2);
+    }
+    function currentIndex(){
+      var list = cards();
+      if(!list.length) return 0;
+      var current = track.scrollLeft;
+      var best = 0;
+      var bestDist = Infinity;
+      list.forEach(function(card, i){
+        var dist = Math.abs(targetFor(card) - current);
+        if(dist < bestDist){bestDist = dist; best = i;}
+      });
+      return best;
+    }
+    function ease(t){return 1 - Math.pow(1 - t, 3);}
+    function animateTo(left){
+      var start = track.scrollLeft;
+      var max = Math.max(0, track.scrollWidth - track.clientWidth);
+      var end = Math.max(0, Math.min(left, max));
+      var change = end - start;
+      var duration = Math.min(720, Math.max(420, Math.abs(change) * 1.25));
+      var started = performance.now();
+      if(Math.abs(change) < 1){update();return;}
+      animating = true;
+      prev.disabled = true;
+      next.disabled = true;
+      function frame(now){
+        var p = Math.min(1, (now - started) / duration);
+        track.scrollLeft = start + change * ease(p);
+        if(p < 1){
+          requestAnimationFrame(frame);
+        }else{
+          animating = false;
+          track.scrollLeft = end;
+          update();
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+    function update(){
+      var maxScroll = track.scrollWidth - track.clientWidth - 2;
+      if(animating) return;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= maxScroll;
+    }
+    function go(dir){
+      if(animating) return;
+      var list = cards();
+      if(!list.length) return;
+      var idx = Math.max(0, Math.min(list.length - 1, currentIndex() + dir));
+      animateTo(targetFor(list[idx]));
+    }
+    prev.addEventListener('click', function(){ go(-1); });
+    next.addEventListener('click', function(){ go(1); });
+    track.addEventListener('scroll', update, {passive:true});
+    window.addEventListener('resize', update);
+    update();
+  }
+  initCarousel('revsTrack','revsPrev','revsNext','.rev-shot');
+  initCarousel('revvTrack','revvPrev','revvNext','.vcard');
 })();
 
 </script>
