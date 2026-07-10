@@ -681,11 +681,13 @@ select.ff{appearance:none;cursor:pointer;color:#2A2E35;background-image:url("dat
 .revv-h3{font-family:var(--fb);font-size:clamp(24px,2.6vw,34px);font-weight:800;color:var(--text-dark);letter-spacing:-.01em;text-align:center;margin-bottom:36px}
 .revv-h3 em{font-style:normal;color:var(--blue)}
 .revv-track-wrap{position:relative;overflow:hidden}
-.revv-track{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.revv-track{display:flex;gap:14px;overflow-x:auto;scroll-behavior:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:6px 2px}
+.revv-track::-webkit-scrollbar{display:none}
+.revv-track .vcard{flex:0 0 calc((100% - 42px)/4);min-width:0;scroll-snap-align:start}
 .revv-track .vcard-img-wrap{aspect-ratio:9/16}
 @media(max-width:900px){
   .rev-shot{flex-basis:calc((100% - 14px)/2)}
-  .revv-track{grid-template-columns:repeat(2,1fr)}
+  .revv-track .vcard{flex-basis:calc((100% - 28px)/3)}
 }
 @media(max-width:600px){
   .reviews-s{padding:72px 14px}
@@ -693,9 +695,8 @@ select.ff{appearance:none;cursor:pointer;color:#2A2E35;background-image:url("dat
   .revs-track{padding:4px 44px;scroll-padding:0 44px}
   .rev-shot{flex:0 0 88%;padding:12px;scroll-snap-align:center;scroll-snap-stop:always}
   .revs-track-wrap{margin-bottom:64px}
-  .revv-track{display:flex!important;grid-template-columns:none!important;gap:14px;overflow-x:auto;scroll-behavior:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 44px;scroll-padding:0 44px}
-  .revv-track::-webkit-scrollbar{display:none}
-  .revv-track .vcard{flex:0 0 78%!important;width:78%!important;scroll-snap-align:center;scroll-snap-stop:always}
+  .revv-track{padding:4px 44px;scroll-padding:0 44px}
+  .revv-track .vcard{flex:0 0 62%!important;width:62%!important;scroll-snap-align:center;scroll-snap-stop:always}
 }
 
 /* ════════ FINAL ════════ */
@@ -1690,9 +1691,21 @@ section[id]{scroll-margin-top:80px}
 
     <h3 class="revv-h3 rv">Видео-отзывы <em>участников</em></h3>
     <div class="revv-track-wrap rv d1">
-      <button class="vibes-arrow vibes-arrow-prev" id="revvPrev" aria-label="Назад"><svg viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-      <button class="vibes-arrow vibes-arrow-next" id="revvNext" aria-label="Вперёд"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="revs-arrow revs-arrow-prev" id="revvPrev" aria-label="Назад"><svg viewBox="0 0 24 24" fill="none"><path d="M15 5L8 12L15 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="revs-arrow revs-arrow-next" id="revvNext" aria-label="Вперёд"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="revv-track" id="revvTrack">
+        <div class="vcard" data-vk="">
+          <div class="vcard-img-wrap">
+            <div class="rev-ph rev-ph-dark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,.85)" stroke-width="1.4"/><path d="M10 8.5L15.5 12L10 15.5Z" fill="rgba(255,255,255,.85)"/></svg><span>Видео-отзыв</span></div>
+            <div class="vcard-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
+          </div>
+        </div>
+        <div class="vcard" data-vk="">
+          <div class="vcard-img-wrap">
+            <div class="rev-ph rev-ph-dark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,.85)" stroke-width="1.4"/><path d="M10 8.5L15.5 12L10 15.5Z" fill="rgba(255,255,255,.85)"/></svg><span>Видео-отзыв</span></div>
+            <div class="vcard-play"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19Z" fill="rgba(255,255,255,0.92)"/></svg></div>
+          </div>
+        </div>
         <div class="vcard" data-vk="">
           <div class="vcard-img-wrap">
             <div class="rev-ph rev-ph-dark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,.85)" stroke-width="1.4"/><path d="M10 8.5L15.5 12L10 15.5Z" fill="rgba(255,255,255,.85)"/></svg><span>Видео-отзыв</span></div>
